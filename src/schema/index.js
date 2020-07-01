@@ -1,6 +1,7 @@
-import { ExampleDef, AuthorDef} from "./typeDefs/example";
+import { EventDef } from "./typeDefs/eventDef";
+import { UserDef } from "./typeDefs/userDef";
 
 export default [
-    ExampleDef,
-    AuthorDef
+    EventDef,
+    UserDef
 ]
