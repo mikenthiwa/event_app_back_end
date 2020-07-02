@@ -8,8 +8,8 @@ export const resolvers = {
     },
     Mutation: {
         addEvent: (parents, args) => {
-            const { eventDescription, onlineStatus } = args;
-            const fields = {eventDescription, onlineStatus};
+            const { eventDescription, onlineStatus, topics, eventDate } = args;
+            const fields = {eventDescription, onlineStatus, topics, eventDate};
             missingField(fields);
             return AddEvent(args);
         },

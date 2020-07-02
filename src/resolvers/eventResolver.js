@@ -1,14 +1,18 @@
 import Event from '../db/models/Event';
+import moment from 'moment';
 import uniqid from 'uniqid';
 import { ApolloError } from "apollo-server-express";
 
 export const AddEvent = async args => {
-    const { eventDescription, onlineStatus } = args;
+    const { eventDescription, onlineStatus, topics, eventDate } = args;
     try {
        const event = await Event.find({ eventDescription });
        if(event.length === 0) {
            const eventId = uniqid();
-           const response = await Event.create({eventId, eventDescription, onlineStatus});
+           const response = await Event.create({
+               eventId, eventDescription, onlineStatus, topics,
+               eventDate: moment().format(eventDate)
+           });
            return { ...response._doc }
        }
        return new ApolloError("Event already exists")
@@ -21,7 +25,9 @@ export const AddEvent = async args => {
 export const Events = async () => {
     try {
         const eventsResponse = await Event.find();
-        return [...eventsResponse]
+        return eventsResponse.map(event => {
+            return {...event._doc, eventDate: event._doc.eventDate.toDateString()};
+        })
     } catch (e) {
         return new ApolloError('Something went wrong')
     }
