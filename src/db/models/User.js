@@ -19,7 +19,15 @@ const UserSchema = new Schema({
         maxLength: 15,
         trim: true
     },
-
+    isAdmin: {
+        type: Boolean,
+        trim: true,
+        default: false
+    },
+    events: [{
+        type: Schema.Types.ObjectId,
+        ref: "Event"
+    }]
 }, { timeStamp: true});
 
 const User = mongoose.model('User', UserSchema);
