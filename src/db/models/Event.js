@@ -24,6 +24,10 @@ export const eventSchema = new Schema({
     eventDate: {
         type: Date,
         required: String
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
     }
 });
 

@@ -7,6 +7,7 @@ export const EventDef = gql`
         onlineStatus: Boolean
         topics: [String]
         eventDate: String
+        user: User
     }
     type UpdateEvent {
         eventId: String
@@ -20,11 +21,12 @@ export const EventDef = gql`
     
     type Query {
         events: [Event]
+        eventsByUser: [Event]
     }
     
     type Mutation {
         addEvent(eventDescription: String, onlineStatus: Boolean, topics: [String], eventDate: String): Event
         updateEvent(eventDescription: String, eventId: String): UpdateEvent
-        deleteEvent(eventName: String, eventId: String): DeleteMessage
+        deleteEvent(eventId: String): DeleteMessage
     }
 `;

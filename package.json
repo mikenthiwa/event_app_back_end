@@ -5,6 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "nodemon node_modules/.bin/babel-node src/server/index.js",
+    "clean": "rm -rf build && mkdir build",
+    "build-babel": "babel -d ./build ./src -s",
+    "build": "yarn run clean && yarn run build-babel",
+    "start": "yarn install && yarn run build && node ./build/server/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -26,6 +30,7 @@
     "bcrypt": "^5.0.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
+    "email-validator": "^2.0.4",
     "express": "^4.17.1",
     "graphql": "^15.1.0",
     "jsonwebtoken": "^8.5.1",
