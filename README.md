@@ -31,14 +31,14 @@ Install Nodejs<br/>
 
 #### Authentication:
 * Register or login to obtain token
-* Copy token and add it to the section of headers in the graphql playground:
+* Copy token and add it to the header section in the graphql playground:
 `{"authorization": "token"}`
 
-####Environment Variables:
+#### Environment Variables:
 Create your .env file in the root directory by following the .env.example below
 
-PORT=8000
-SECRET_KEY=12345
-DBURI=mongodb+srv://admin:Kenya2019@cluster0-9lrtb.mongodb.net/Event_DB?retryWrites=true&w=majority
+* PORT=8000
+* SECRET_KEY=12345
+* DBURI=mongodb+srv://admin:Kenya2019@cluster0-9lrtb.mongodb.net/Event_DB?retryWrites=true&w=majority
 
 
