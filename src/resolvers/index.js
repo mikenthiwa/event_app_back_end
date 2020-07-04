@@ -1,31 +1,61 @@
-import {AddEvent, Events, UpdateEvent, DeleteEvent, } from "./eventResolver";
+import {AddEvent, Events, UpdateEvent, DeleteEvent, EventByUser } from "./eventResolver";
 import { AddUser, loginUser } from "./userResolver";
 import {missingField} from "../helpers";
+import { ApolloError } from "apollo-server-express";
 
 export const resolvers = {
     Query: {
-        events: () => Events()
+        events: () => {
+            return Events();
+        },
+        eventsByUser: (parents, args, context) => {
+            const { isAuthenticated, error, email} = context;
+            if(!isAuthenticated){
+                throw new ApolloError(error)
+            };
+            return EventByUser(email);
+        }
     },
     Mutation: {
-        addEvent: (parents, args) => {
+        addEvent: (parents, args, context) => {
+            const { isAuthenticated, error, email} = context;
             const { eventDescription, onlineStatus, topics, eventDate } = args;
             const fields = {eventDescription, onlineStatus, topics, eventDate};
+            if(!isAuthenticated){
+                throw new ApolloError(error)
+            }
             missingField(fields);
-            return AddEvent(args);
+            return AddEvent(args, email);
         },
-        updateEvent: (parents, args) => {
+        updateEvent: (parents, args, context) => {
+            const { isAuthenticated, error, email} = context;
+            if(!isAuthenticated) {
+                throw new ApolloError(error)
+            }
             const {eventId, eventDescription} = args;
             const fields = {eventId, eventDescription};
             missingField(fields);
-            return UpdateEvent(args);
+            return UpdateEvent(args, email);
         },
-        deleteEvent: (parents, args) => {
-            const { eventId, eventDescription } = args;
-            const fields = { eventId, eventDescription };
+        deleteEvent: (parents, args, context) => {
+            const { isAuthenticated, error, email} = context;
+            if(!isAuthenticated) {
+                throw new ApolloError(error)
+            }
+            const { eventId } = args;
+            const fields = { eventId };
             missingField(fields);
-            return DeleteEvent(eventId, eventDescription);
+            return DeleteEvent(eventId, email);
         },
-        addUser: (args, { username, email, password}) => AddUser(username, email, password),
-        loginUser: (args, {email, password}) => loginUser(email, password),
+        register: (parents, args, { username, email, password }) => {
+            const fields = { username, email, password }
+            missingField(fields)
+            return AddUser(username, email, password)
+        },
+        loginUser: (args, {email, password}) => {
+            const fields = { email, password };
+            missingField(fields);
+            return loginUser(email, password)
+        },
     }
 }
